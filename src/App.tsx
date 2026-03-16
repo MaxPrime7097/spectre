@@ -279,8 +279,24 @@ export default function App() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505]/90 backdrop-blur-md"
           >
             <div className="max-w-md w-full bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 text-center shadow-2xl">
-              <div className="w-20 h-20 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-emerald-500/20">
-                <ShieldAlert className="w-10 h-10 text-emerald-500" />
+              <div className="w-48 h-24 mx-auto mb-8 flex items-center justify-center bg-emerald-500/5 rounded-2xl border border-emerald-500/10 overflow-hidden">
+                <img 
+                  src="/logo.png" 
+                  alt="S.P.E.C.T.R.E Logo" 
+                  className="w-full h-full object-contain brightness-110" 
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent) {
+                      const fallback = document.createElement('div');
+                      fallback.className = 'text-emerald-500 font-black text-xl tracking-tighter';
+                      fallback.innerText = 'S.P.E.C.T.R.E';
+                      parent.appendChild(fallback);
+                    }
+                  }}
+                />
               </div>
               <h1 className="text-3xl font-black text-white mb-4 tracking-[0.3em]">S.P.E.C.T.R.E</h1>
               <p className="text-gray-500 mb-6 leading-relaxed text-sm uppercase tracking-widest">

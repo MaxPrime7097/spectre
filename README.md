@@ -1,4 +1,8 @@
 # 👁️ S.P.E.C.T.R.E
+<p align="center">
+  <img src="logo.png" alt="S.P.E.C.T.R.E Logo" width="400">
+</p>
+
 ### **System for Proactive Engineering and Code Technical Real-time Evaluation**
 
 [![AI Powered](https://img.shields.io/badge/AI-Gemini%203%20Flash-blueviolet?style=for-the-badge&logo=google-gemini)](https://ai.google.dev/)
@@ -90,6 +94,33 @@ Features a high-quality, masculine American AI voice that provides non-intrusive
 
 ---
 
+## ☁️ Cloud Infrastructure
+
+S.P.E.C.T.R.E is deployed using **Firebase Hosting on Google Cloud**, providing a globally distributed edge environment for real-time AI developer assistance powered by Gemini. This ensures low-latency delivery of the frontend assets and a secure, scalable entry point for the system.
+
+### **Deployment Steps**
+
+To deploy S.P.E.C.T.R.E to your own Firebase environment:
+
+1.  **Install Firebase CLI**:
+    ```bash
+    npm install -g firebase-tools
+    ```
+2.  **Authenticate**:
+    ```bash
+    firebase login
+    ```
+3.  **Build the Application**:
+    ```bash
+    npm run build
+    ```
+4.  **Deploy to Hosting**:
+    ```bash
+    firebase deploy --only hosting
+    ```
+
+---
+
 ## 🚀 Deployment & Extensions
 
 S.P.E.C.T.R.E is available across multiple platforms to ensure you have AI assistance wherever you code.
@@ -104,7 +135,7 @@ Integrate S.P.E.C.T.R.E directly into your IDE. The extension provides a native 
 
 ### 🐍 Python Terminal Agent
 For developers who prefer the command line or need to monitor non-browser environments (like a standalone terminal or a native IDE), the Python agent provides a lightweight, background monitoring service.
-- **Source**: `spectre_agent.py`
+- **Source**: `spectre_agent.py`(not completed)
 
 ---
 
