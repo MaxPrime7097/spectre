@@ -1,0 +1,38 @@
+{
+  "entities": {
+    "SpectreAnalysis": {
+      "title": "SpectreAnalysis",
+      "description": "Analysis result from Gemini",
+      "type": "object",
+      "properties": {
+        "issue": { "type": "string" },
+        "suggestion": { "type": "string" },
+        "severity": { "type": "string", "enum": ["low", "medium", "high"] },
+        "fix_code": { "type": "string" },
+        "explanation": { "type": "string" },
+        "patch": { "type": "string" },
+        "language": { "type": "string" },
+        "file_path": { "type": "string" }
+      },
+      "required": ["issue", "suggestion", "severity", "explanation", "language"]
+    },
+    "TimelineEvent": {
+      "title": "TimelineEvent",
+      "description": "An event in the debug timeline",
+      "type": "object",
+      "properties": {
+        "time": { "type": "string", "format": "date-time" },
+        "issue": { "type": "string" },
+        "data": { "$ref": "SpectreAnalysis" },
+        "userId": { "type": "string", "description": "UID of the user who owns this event" }
+      },
+      "required": ["time", "issue", "userId"]
+    }
+  },
+  "firestore": {
+    "/timeline/{eventId}": {
+      "schema": "TimelineEvent",
+      "description": "Collection of debug events"
+    }
+  }
+}

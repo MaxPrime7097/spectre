@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Monitor, Play, Square, Settings, Terminal, ShieldAlert, Cpu, Activity, Zap } from 'lucide-react';
+import { Monitor, Play, Square, Settings, Terminal, ShieldAlert, Cpu, Activity, Zap, LogIn, User as UserIcon, X } from 'lucide-react';
 import { analyzeScreen, SpectreAnalysis, speak, playNotification } from './services/geminiService';
 import { SuggestionsPanel, TimelineEvent } from './components/SuggestionsPanel';
 import { motion, AnimatePresence } from 'motion/react';
+import { auth, googleProvider, signInWithPopup, onAuthStateChanged, db, collection, addDoc, onSnapshot, query, where, orderBy, User } from './lib/firebase';
 
 export default function App() {
   const [isCapturing, setIsCapturing] = useState(false);
@@ -12,12 +13,68 @@ export default function App() {
   const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [uptime, setUptime] = useState(0);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const uptimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      setIsAuthReady(true);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setTimeline([]);
+      return;
+    }
+
+    const q = query(
+      collection(db, 'timeline'),
+      where('userId', '==', user.uid),
+      orderBy('time', 'desc')
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const events: TimelineEvent[] = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as any));
+      setTimeline(events);
+    }, (err) => {
+      console.error('[SPECTRE] Firestore Sync Error:', err);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleLogin = async () => {
+    setIsAuthReady(false); // Show loading state or reset
+    setError(null);
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err: any) {
+      console.error('[SPECTRE] Login Error:', err);
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError('Login cancelled. Please keep the popup open to authenticate.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError('Multiple login requests detected. Please try again.');
+      } else if (err.code === 'auth/popup-blocked') {
+        setError('Login popup was blocked by your browser. Please allow popups for this site.');
+      } else {
+        setError('Authentication failed. Please try again.');
+      }
+    } finally {
+      setIsAuthReady(true);
+    }
+  };
 
   const onVideoRef = React.useCallback((el: HTMLVideoElement | null) => {
     (videoRef as any).current = el;
@@ -100,20 +157,39 @@ export default function App() {
         if (results && results.length > 0) {
           setSuggestions(results);
           
-          // Update timeline with new unique issues
-          results.forEach(res => {
-            setTimeline(prev => {
-              const exists = prev.some(e => e.issue === res.issue);
+          // Save to Firestore if authenticated
+          if (user) {
+            results.forEach(async (res) => {
+              const exists = timeline.some(e => e.issue === res.issue);
               if (!exists) {
-                return [...prev, {
-                  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                  issue: res.issue,
-                  data: res
-                }];
+                try {
+                  await addDoc(collection(db, 'timeline'), {
+                    time: new Date().toISOString(),
+                    issue: res.issue,
+                    data: res,
+                    userId: user.uid
+                  });
+                } catch (err) {
+                  console.error('[SPECTRE] Failed to save to Firestore:', err);
+                }
               }
-              return prev;
             });
-          });
+          } else {
+            // Local fallback if not authenticated (though we'll likely block capture)
+            results.forEach(res => {
+              setTimeline(prev => {
+                const exists = prev.some(e => e.issue === res.issue);
+                if (!exists) {
+                  return [{
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    issue: res.issue,
+                    data: res
+                  }, ...prev];
+                }
+                return prev;
+              });
+            });
+          }
         }
       } else {
         console.error("[SPECTRE] Failed to get canvas context");
@@ -163,10 +239,17 @@ export default function App() {
     } catch (err: any) {
       console.error("[SPECTRE] Error starting capture:", err);
       playNotification();
-      if (err.name === 'NotAllowedError' || err.message?.includes('Permission denied')) {
-        setError("System Access Denied: Please click 'Initialize System' and grant screen sharing permissions to continue.");
+      
+      const isPermissionError = err.name === 'NotAllowedError' || 
+                               err.message?.toLowerCase().includes('permission denied') ||
+                               err.message?.toLowerCase().includes('user cancelled');
+
+      if (isPermissionError) {
+        setError("System Access Denied: Screen sharing permission was refused. Please click 'Initialize System' again and select a window or screen to share.");
       } else if (err.name === 'NotFoundError') {
-        setError("System Error: No display source found.");
+        setError("System Error: No display source found. Please ensure your browser supports screen capture.");
+      } else if (err.name === 'InvalidStateError') {
+        setError("System Error: The application is in an invalid state for capture. Please refresh the page.");
       } else {
         setError(`System Initialization Failed: ${err.message || 'Hardware unavailable or browser restriction.'}`);
       }
@@ -187,6 +270,46 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-[#050505] text-gray-300 font-mono overflow-hidden selection:bg-emerald-500/30">
+      <AnimatePresence>
+        {!user && isAuthReady && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505]/90 backdrop-blur-md"
+          >
+            <div className="max-w-md w-full bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 text-center shadow-2xl">
+              <div className="w-20 h-20 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-emerald-500/20">
+                <ShieldAlert className="w-10 h-10 text-emerald-500" />
+              </div>
+              <h1 className="text-3xl font-black text-white mb-4 tracking-[0.3em]">S.P.E.C.T.R.E</h1>
+              <p className="text-gray-500 mb-6 leading-relaxed text-sm uppercase tracking-widest">
+                System for Proactive Engineering and Code Technical Real-time Evaluation. 
+                Please authenticate to establish a secure neural link.
+              </p>
+              
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[10px] uppercase tracking-widest font-bold"
+                >
+                  {error}
+                </motion.div>
+              )}
+
+              <button
+                onClick={handleLogin}
+                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-[#050505] font-bold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 active:scale-95 uppercase tracking-widest text-xs"
+              >
+                <LogIn className="w-4 h-4" />
+                {error ? 'Retry Connection' : 'Initialize Secure Link'}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main Viewport */}
       <div className="flex-1 flex flex-col relative">
         {/* Header */}
@@ -223,6 +346,26 @@ export default function App() {
 
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-6 mr-6 border-r border-[#1a1a1a] pr-6">
+              {user && (
+                <div className="flex items-center gap-3 mr-4">
+                  <div className="text-right">
+                    <p className="text-[8px] text-gray-600 uppercase tracking-tighter">Operator</p>
+                    <p className="text-[10px] text-gray-400 font-bold">{user.displayName?.split(' ')[0]}</p>
+                  </div>
+                  <button 
+                    onClick={() => auth.signOut()}
+                    className="w-8 h-8 rounded-lg border border-white/5 overflow-hidden hover:border-emerald-500/50 transition-colors"
+                  >
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt="User" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                        <UserIcon size={14} className="text-slate-400" />
+                      </div>
+                    )}
+                  </button>
+                </div>
+              )}
               <div className="text-right">
                 <p className="text-[8px] text-gray-600 uppercase tracking-tighter">Uptime</p>
                 <p className="text-[11px] text-gray-400 font-bold">{formatUptime(uptime)}</p>
@@ -280,9 +423,18 @@ export default function App() {
                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
                 className="absolute top-8 z-30 w-full max-w-md px-4"
               >
-                <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-lg flex items-center gap-4 text-red-400 backdrop-blur-md shadow-2xl">
-                  <ShieldAlert size={20} className="shrink-0" />
-                  <p className="text-[11px] uppercase tracking-wider leading-relaxed">{error}</p>
+                <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-lg flex items-start gap-4 text-red-400 backdrop-blur-md shadow-2xl relative group">
+                  <ShieldAlert size={20} className="shrink-0 mt-0.5" />
+                  <div className="flex-1 pr-6">
+                    <p className="text-[11px] uppercase tracking-wider leading-relaxed font-bold mb-1">System Alert</p>
+                    <p className="text-[10px] opacity-80 leading-normal">{error}</p>
+                  </div>
+                  <button 
+                    onClick={() => setError(null)}
+                    className="absolute top-2 right-2 p-1 hover:bg-red-500/20 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    <X size={14} />
+                  </button>
                 </div>
               </motion.div>
             )}
