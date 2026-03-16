@@ -23,7 +23,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
     switch (severity) {
       case 'high': return 'text-red-500 border-red-500/20 bg-red-500/5';
       case 'medium': return 'text-amber-500 border-amber-500/20 bg-amber-500/5';
-      case 'low': return 'text-emerald-500 border-emerald-500/20 bg-emerald-500/5';
+      case 'low': return 'text-cyan-500 border-cyan-500/20 bg-cyan-500/5';
       default: return 'text-blue-500 border-blue-500/20 bg-blue-500/5';
     }
   };
@@ -59,7 +59,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
           <motion.div 
             animate={isAnalyzing ? { scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] } : {}}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className={`w-1.5 h-1.5 rounded-full ${isAnalyzing ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-gray-700'}`} 
+            className={`w-1.5 h-1.5 rounded-full ${isAnalyzing ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.6)]' : 'bg-gray-700'}`} 
           />
           Autonomous Agent
         </h2>
@@ -70,7 +70,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
               animate={{ opacity: 1, rotate: 0 }}
               exit={{ opacity: 0, rotate: 90 }}
             >
-              <Loader2 size={12} className="animate-spin text-emerald-500" />
+              <Loader2 size={12} className="animate-spin text-cyan-500" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -91,7 +91,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="flex flex-col items-center justify-center py-12 text-center space-y-4 opacity-30"
               >
-                <CheckCircle2 size={40} className="text-emerald-500/50" strokeWidth={1} />
+                <CheckCircle2 size={40} className="text-cyan-500/50" strokeWidth={1} />
                 <p className="font-mono text-[11px] text-gray-400 uppercase tracking-widest">Environment Secure</p>
               </motion.div>
             )}
@@ -107,7 +107,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                   animate={{ opacity: 1, x: 0, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, x: -20 }}
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className="p-4 rounded-lg bg-[#141414] border border-[#1f1f1f] hover:border-emerald-500/20 transition-colors group relative overflow-hidden"
+                  className="p-4 rounded-lg bg-[#141414] border border-[#1f1f1f] hover:border-cyan-500/20 transition-colors group relative overflow-hidden"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className={`px-2 py-0.5 rounded border text-[8px] font-bold uppercase tracking-widest ${getSeverityColor(s.severity)}`}>
@@ -115,7 +115,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                     </div>
                     <div className="flex items-center gap-2">
                       {s.file_path && (
-                        <div className="text-[8px] font-mono text-emerald-500/80 uppercase tracking-tighter bg-emerald-500/5 border border-emerald-500/10 px-1.5 py-0.5 rounded">
+                        <div className="text-[8px] font-mono text-cyan-500/80 uppercase tracking-tighter bg-cyan-500/5 border border-cyan-500/10 px-1.5 py-0.5 rounded">
                           {s.file_path.split('/').pop()}
                         </div>
                       )}
@@ -153,7 +153,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[9px] font-mono uppercase text-gray-600 tracking-tighter">Autonomous Patch</span>
                       </div>
-                      <pre className="text-[9px] font-mono bg-black/60 p-3 rounded border border-white/5 text-emerald-400/90 overflow-x-auto mb-3 whitespace-pre scrollbar-hide">
+                      <pre className="text-[9px] font-mono bg-black/60 p-3 rounded border border-white/5 text-cyan-400/90 overflow-x-auto mb-3 whitespace-pre scrollbar-hide">
                         {s.patch}
                       </pre>
                       
@@ -162,7 +162,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleApplyFix(s)}
                         disabled={applyingFix === s.issue}
-                        className="w-full flex items-center justify-center gap-2 py-2 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-500 hover:text-white border border-emerald-500/20 rounded text-[10px] font-bold uppercase tracking-widest transition-all disabled:opacity-50 shadow-lg shadow-emerald-500/10"
+                        className="w-full flex items-center justify-center gap-2 py-2 bg-cyan-600/10 hover:bg-cyan-600 text-cyan-500 hover:text-white border border-cyan-500/20 rounded text-[10px] font-bold uppercase tracking-widest transition-all disabled:opacity-50 shadow-lg shadow-cyan-500/10"
                       >
                         {applyingFix === s.issue ? (
                           <Loader2 size={12} className="animate-spin" />
@@ -176,7 +176,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                   
                   <div className={`absolute top-0 right-0 w-24 h-24 blur-3xl opacity-5 rounded-full -mr-12 -mt-12 transition-colors duration-500 ${
                     s.severity === 'high' ? 'bg-red-500' : 
-                    s.severity === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
+                    s.severity === 'medium' ? 'bg-amber-500' : 'bg-cyan-500'
                   }`} />
                 </motion.div>
               ))}
@@ -214,7 +214,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                   <div className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 z-10 ${
                     event.data?.severity === 'high' ? 'bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]' : 
                     event.data?.severity === 'medium' ? 'bg-amber-500' : 
-                    event.data?.severity === 'low' ? 'bg-emerald-500' : 'bg-[#1a1a1a]'
+                    event.data?.severity === 'low' ? 'bg-cyan-500' : 'bg-[#1a1a1a]'
                   }`} />
                   <div className="space-y-0.5">
                     <p className="text-[9px] font-mono text-gray-600">{event.time}</p>
@@ -265,7 +265,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
 
                 <div>
                   <h4 className="text-[9px] font-mono uppercase text-gray-600 mb-2 tracking-widest">Resolution Path</h4>
-                  <p className="text-[11px] text-emerald-500/80 leading-relaxed font-mono">
+                  <p className="text-[11px] text-cyan-500/80 leading-relaxed font-mono">
                     {selectedEvent.data.suggestion}
                   </p>
                 </div>
@@ -280,7 +280,7 @@ export const SuggestionsPanel: React.FC<SuggestionsPanelProps> = ({ suggestions,
                 {selectedEvent.data.patch && (
                   <div>
                     <h4 className="text-[9px] font-mono uppercase text-gray-600 mb-2 tracking-widest">Historical Patch</h4>
-                    <pre className="text-[9px] font-mono bg-black/60 p-3 rounded border border-white/5 text-emerald-400/90 overflow-x-auto whitespace-pre">
+                    <pre className="text-[9px] font-mono bg-black/60 p-3 rounded border border-white/5 text-cyan-400/90 overflow-x-auto whitespace-pre">
                       {selectedEvent.data.patch}
                     </pre>
                   </div>

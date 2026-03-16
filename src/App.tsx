@@ -269,7 +269,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-[#050505] text-gray-300 font-mono overflow-hidden selection:bg-emerald-500/30">
+    <div className="flex h-screen bg-[#050505] text-gray-300 font-mono overflow-hidden selection:bg-cyan-500/30">
       <AnimatePresence>
         {!user && isAuthReady && (
           <motion.div 
@@ -279,7 +279,7 @@ export default function App() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505]/90 backdrop-blur-md"
           >
             <div className="max-w-md w-full bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 text-center shadow-2xl">
-              <div className="w-48 h-24 mx-auto mb-8 flex items-center justify-center bg-emerald-500/5 rounded-2xl border border-emerald-500/10 overflow-hidden">
+              <div className="w-48 h-24 mx-auto mb-8 flex items-center justify-center bg-cyan-500/5 rounded-2xl border border-cyan-500/10 overflow-hidden">
                 <img 
                   src="/logo.png" 
                   alt="S.P.E.C.T.R.E Logo" 
@@ -291,7 +291,7 @@ export default function App() {
                     const parent = target.parentElement;
                     if (parent) {
                       const fallback = document.createElement('div');
-                      fallback.className = 'text-emerald-500 font-black text-xl tracking-tighter';
+                      fallback.className = 'text-cyan-500 font-black text-xl tracking-tighter';
                       fallback.innerText = 'S.P.E.C.T.R.E';
                       parent.appendChild(fallback);
                     }
@@ -313,10 +313,10 @@ export default function App() {
                   {error}
                 </motion.div>
               )}
-
+ 
               <button
                 onClick={handleLogin}
-                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-[#050505] font-bold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 active:scale-95 uppercase tracking-widest text-xs"
+                className="w-full py-4 bg-cyan-500 hover:bg-cyan-600 text-[#050505] font-bold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-cyan-500/20 active:scale-95 uppercase tracking-widest text-xs"
               >
                 <LogIn className="w-4 h-4" />
                 {error ? 'Retry Connection' : 'Initialize Secure Link'}
@@ -333,14 +333,14 @@ export default function App() {
           <div className="flex items-center gap-4">
             <motion.div 
               initial={false}
-              animate={{ borderColor: isCapturing ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.1)' }}
-              className="relative w-9 h-9 bg-emerald-500/5 border rounded-lg flex items-center justify-center transition-colors duration-500"
+              animate={{ borderColor: isCapturing ? 'rgba(6,182,212,0.4)' : 'rgba(255,255,255,0.1)' }}
+              className="relative w-9 h-9 bg-cyan-500/5 border rounded-lg flex items-center justify-center transition-colors duration-500"
             >
-              <Terminal size={20} className={isCapturing ? 'text-emerald-500' : 'text-gray-600'} />
+              <Terminal size={20} className={isCapturing ? 'text-cyan-500' : 'text-gray-600'} />
               {isCapturing && (
                 <motion.div 
                   layoutId="active-dot"
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0a0a0a]" 
+                  className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-500 rounded-full border-2 border-[#0a0a0a]" 
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
@@ -353,7 +353,7 @@ export default function App() {
                   animate={isCapturing ? { opacity: [0.3, 1, 0.3] } : { opacity: 0.3 }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Activity size={10} className={isCapturing ? 'text-emerald-500' : ''} />
+                  <Activity size={10} className={isCapturing ? 'text-cyan-500' : ''} />
                 </motion.div>
                 Proactive Evaluation Active
               </div>
@@ -370,7 +370,7 @@ export default function App() {
                   </div>
                   <button 
                     onClick={() => auth.signOut()}
-                    className="w-8 h-8 rounded-lg border border-white/5 overflow-hidden hover:border-emerald-500/50 transition-colors"
+                    className="w-8 h-8 rounded-lg border border-white/5 overflow-hidden hover:border-cyan-500/50 transition-colors"
                   >
                     {user.photoURL ? (
                       <img src={user.photoURL} alt="User" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
@@ -402,7 +402,7 @@ export default function App() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={startCapture}
-                  className="group relative flex items-center gap-2 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+                  className="group relative flex items-center gap-2 px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-md text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(6,182,212,0.2)]"
                 >
                   <Play size={14} fill="currentColor" />
                   Initialize System
@@ -470,13 +470,13 @@ export default function App() {
                   className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-8 p-12"
                 >
                   <div className="relative">
-                    <div className="w-24 h-24 rounded-full border border-[#1a1a1a] flex items-center justify-center text-gray-700 group-hover:border-emerald-500/30 group-hover:text-emerald-500/30 transition-all duration-700">
+                    <div className="w-24 h-24 rounded-full border border-[#1a1a1a] flex items-center justify-center text-gray-700 group-hover:border-cyan-500/30 group-hover:text-cyan-500/30 transition-all duration-700">
                       <Monitor size={48} strokeWidth={1} />
                     </div>
                     <motion.div 
                       animate={{ rotate: 360 }}
                       transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                      className="absolute inset-0 border-t border-emerald-500/20 rounded-full"
+                      className="absolute inset-0 border-t border-cyan-500/20 rounded-full"
                     />
                   </div>
                   
@@ -517,9 +517,9 @@ export default function App() {
                     <motion.div 
                       animate={{ y: ["0%", "100%", "0%"] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                      className="w-full h-[2px] bg-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10"
+                      className="w-full h-[2px] bg-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.8)] z-10"
                     />
-                    <div className="absolute inset-0 bg-emerald-500/5 opacity-20" />
+                    <div className="absolute inset-0 bg-cyan-500/5 opacity-20" />
                     <div className="absolute inset-0 border-[20px] border-[#0a0a0a] [mask-image:linear-gradient(to_bottom,black,transparent_20%,transparent_80%,black)]" />
                   </div>
                 </motion.div>
@@ -537,17 +537,17 @@ export default function App() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute bottom-6 left-6 flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full backdrop-blur-md z-30 shadow-[0_0_20px_rgba(16,185,129,0.1)]"
+                  className="absolute bottom-6 left-6 flex items-center gap-3 bg-cyan-500/10 border border-cyan-500/20 px-4 py-2 rounded-full backdrop-blur-md z-30 shadow-[0_0_20px_rgba(6,182,212,0.1)]"
                 >
                   <div className="relative">
-                    <Cpu size={14} className="text-emerald-500" />
+                    <Cpu size={14} className="text-cyan-500" />
                     <motion.div 
                       animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute inset-0 bg-emerald-500 rounded-full"
+                      className="absolute inset-0 bg-cyan-500 rounded-full"
                     />
                   </div>
-                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Neural Processing...</span>
+                  <span className="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">Neural Processing...</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -558,11 +558,11 @@ export default function App() {
         <footer className="h-10 border-t border-[#1a1a1a] bg-[#0a0a0a] flex items-center justify-between px-6 text-[9px] font-mono text-gray-600 uppercase tracking-[0.2em]">
           <div className="flex items-center gap-8">
             <span className="flex items-center gap-2">
-              <div className={`w-1.5 h-1.5 rounded-full ${isCapturing ? 'bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.5)]' : 'bg-gray-800'}`} />
+              <div className={`w-1.5 h-1.5 rounded-full ${isCapturing ? 'bg-cyan-500 shadow-[0_0_5px_rgba(6,182,212,0.5)]' : 'bg-gray-800'}`} />
               System: {isCapturing ? 'Online' : 'Standby'}
             </span>
             <span className="flex items-center gap-2">
-              <Zap size={10} className={isAnalyzing ? 'text-emerald-500' : ''} />
+              <Zap size={10} className={isAnalyzing ? 'text-cyan-500' : ''} />
               AI Core: {isAnalyzing ? 'Processing' : 'Idle'}
             </span>
           </div>

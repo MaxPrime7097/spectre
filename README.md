@@ -1,6 +1,6 @@
 # 👁️ S.P.E.C.T.R.E
 <p align="center">
-  <img src="logo.png" alt="S.P.E.C.T.R.E Logo" width="400">
+  <img src="public/logo.png" alt="S.P.E.C.T.R.E Logo" width="400">
 </p>
 
 ### **System for Proactive Engineering and Code Technical Real-time Evaluation**

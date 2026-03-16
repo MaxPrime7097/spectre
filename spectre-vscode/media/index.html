@@ -16,8 +16,8 @@
             position: absolute;
             width: 100%;
             height: 2px;
-            background: rgba(16, 185, 129, 0.2);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            background: rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
             animation: scan 4s linear infinite;
             z-index: 10;
         }
@@ -95,7 +95,7 @@
                 switch(sev) {
                     case 'high': return 'text-red-500 border-red-500/20 bg-red-500/5';
                     case 'medium': return 'text-amber-500 border-amber-500/20 bg-amber-500/5';
-                    case 'low': return 'text-emerald-500 border-emerald-500/20 bg-emerald-500/5';
+                    case 'low': return 'text-cyan-500 border-cyan-500/20 bg-cyan-500/5';
                     default: return 'text-gray-500 border-gray-500/20 bg-gray-500/5';
                 }
             };
@@ -104,7 +104,7 @@
                 // Header
                 React.createElement('header', { className: 'h-12 border-b border-[#1a1a1a] bg-[#0a0a0a] flex items-center justify-between px-4 shrink-0' },
                     React.createElement('div', { className: 'flex items-center gap-3' },
-                        React.createElement('div', { className: `w-2 h-2 rounded-full ${isAnalyzing ? 'bg-emerald-500 animate-pulse' : 'bg-gray-700'}` }),
+                        React.createElement('div', { className: `w-2 h-2 rounded-full ${isAnalyzing ? 'bg-cyan-500 animate-pulse' : 'bg-gray-700'}` }),
                         React.createElement('h1', { className: 'text-[10px] font-black tracking-[0.3em] text-white uppercase' }, 'S.P.E.C.T.R.E')
                     ),
                     React.createElement('div', { className: 'text-[8px] text-gray-600 uppercase tracking-widest' }, 'Autonomous Mode Active')
@@ -131,10 +131,10 @@
                                     React.createElement('p', { className: 'text-[11px] text-gray-400 italic' }, s.explanation)
                                 ),
                                 s.patch && React.createElement('div', { className: 'mt-3 pt-3 border-t border-[#1a1a1a]' },
-                                    React.createElement('pre', { className: 'text-[9px] bg-black p-2 rounded border border-white/5 text-emerald-400/80 overflow-x-auto mb-2' }, s.patch),
+                                    React.createElement('pre', { className: 'text-[9px] bg-black p-2 rounded border border-white/5 text-cyan-400/80 overflow-x-auto mb-2' }, s.patch),
                                     React.createElement('button', {
                                         onClick: () => handleApplyFix(s),
-                                        className: 'w-full py-2 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-500 hover:text-white border border-emerald-500/20 rounded text-[9px] font-bold uppercase tracking-widest transition-all'
+                                        className: 'w-full py-2 bg-cyan-600/10 hover:bg-cyan-600 text-cyan-500 hover:text-white border border-cyan-500/20 rounded text-[9px] font-bold uppercase tracking-widest transition-all'
                                     }, 'Apply Autonomous Fix')
                                 )
                             )
