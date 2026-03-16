@@ -3,7 +3,7 @@ import { Monitor, Play, Square, Settings, Terminal, ShieldAlert, Cpu, Activity, 
 import { analyzeScreen, SpectreAnalysis, speak, playNotification } from './services/geminiService';
 import { SuggestionsPanel, TimelineEvent } from './components/SuggestionsPanel';
 import { motion, AnimatePresence } from 'motion/react';
-import { auth, googleProvider, signInWithPopup, onAuthStateChanged, db, collection, addDoc, onSnapshot, query, where, orderBy, User } from './lib/firebase';
+import { auth, googleProvider, signInWithPopup, onAuthStateChanged, db, collection, addDoc, onSnapshot, query, where, orderBy, User, handleFirestoreError, OperationType } from './lib/firebase';
 
 export default function App() {
   const [isCapturing, setIsCapturing] = useState(false);
@@ -49,7 +49,7 @@ export default function App() {
       } as any));
       setTimeline(events);
     }, (err) => {
-      console.error('[SPECTRE] Firestore Sync Error:', err);
+      handleFirestoreError(err, OperationType.LIST, 'timeline');
     });
 
     return () => unsubscribe();
@@ -170,7 +170,7 @@ export default function App() {
                     userId: user.uid
                   });
                 } catch (err) {
-                  console.error('[SPECTRE] Failed to save to Firestore:', err);
+                  handleFirestoreError(err, OperationType.CREATE, 'timeline');
                 }
               }
             });
