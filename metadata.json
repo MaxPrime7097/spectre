@@ -1,0 +1,5 @@
+{
+  "name": "S.P.E.C.T.R.E",
+  "description": "System for Proactive Engineering and Code Technical Real-time Evaluation. Real-time AI assistant that monitors your screen to detect errors and suggest fixes.",
+  "requestFramePermissions": ["display-capture"]
+}

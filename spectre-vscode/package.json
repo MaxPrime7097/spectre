@@ -1,0 +1,47 @@
+{
+  "name": "spectre-vscode",
+  "displayName": "S.P.E.C.T.R.E",
+  "description": "System for Proactive Engineering and Code Technical Real-time Evaluation",
+  "version": "1.0.0",
+  "publisher": "spectre-ai",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Machine Learning"
+  ],
+  "activationEvents": [
+    "onCommand:spectre.openPanel"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "spectre.openPanel",
+        "title": "S.P.E.C.T.R.E: Open Analysis Panel",
+        "icon": "$(terminal)"
+      }
+    ],
+    "configuration": {
+      "title": "S.P.E.C.T.R.E",
+      "properties": {
+        "spectre.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:3000",
+          "description": "URL of the SPECTRE backend service."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "eslint": "^8.33.0"
+  }
+}
