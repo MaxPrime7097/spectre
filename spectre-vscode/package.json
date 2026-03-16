@@ -1,20 +1,32 @@
 {
-  "name": "spectre-vscode",
+  "name": "spectre-debug",
   "displayName": "S.P.E.C.T.R.E",
   "description": "System for Proactive Engineering and Code Technical Real-time Evaluation",
   "version": "1.0.0",
   "publisher": "spectre-ai",
+  "icon": "media/logo.png",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
     "Programming Languages",
     "Linters",
-    "Machine Learning"
+    "Machine Learning",
+    "Education"
   ],
-  "activationEvents": [
-    "onCommand:spectre.openPanel"
+  "keywords": [
+    "AI",
+    "Debug",
+    "Gemini",
+    "Spectre",
+    "Code Review"
   ],
+  "homepage": "https://fir-p-e-c-t-r-e-bdd37.web.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxprime558/spectre"
+  },
+  "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
     "commands": [
@@ -29,8 +41,8 @@
       "properties": {
         "spectre.backendUrl": {
           "type": "string",
-          "default": "http://localhost:3000",
-          "description": "URL of the SPECTRE backend service."
+          "default": "https://fir-p-e-c-t-r-e-bdd37.web.app/",
+          "description": "URL of the SPECTRE web application."
         }
       }
     }
