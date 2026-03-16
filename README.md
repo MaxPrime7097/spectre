@@ -1,16 +1,39 @@
-# S.P.E.C.T.R.E
-### System for Proactive Engineering and Code Technical Real-time Evaluation
+# 👁️ S.P.E.C.T.R.E
+### **System for Proactive Engineering and Code Technical Real-time Evaluation**
 
-S.P.E.C.T.R.E is a cutting-edge, real-time AI assistant designed for developers. It monitors your screen (IDE, Terminal, or Browser) to proactively detect errors, suggest optimizations, and autonomously apply code patches.
+[![AI Powered](https://img.shields.io/badge/AI-Gemini%203%20Flash-blueviolet?style=for-the-badge&logo=google-gemini)](https://ai.google.dev/)
+[![React](https://img.shields.io/badge/Frontend-React%2019-blue?style=for-the-badge&logo=react)](https://react.dev/)
+[![Tailwind](https://img.shields.io/badge/Styling-Tailwind%204-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+S.P.E.C.T.R.E is a cutting-edge, real-time AI assistant designed for developers. It acts as a "second pair of eyes" that monitors your screen (IDE, Terminal, or Browser) to proactively detect errors, suggest optimizations, and autonomously apply code patches before you even realize there's a problem.
 
 ---
 
-## 🏗️ Architecture Diagram
+## 📺 Demo & Overview
+
+S.P.E.C.T.R.E bridges the gap between static analysis and manual debugging by using **Multimodal Vision AI** to understand your entire development context.
+
+### **The Problem**
+Developers lose significant time to:
+1.  **Context Switching**: Moving between the IDE, browser, and terminal to find errors.
+2.  **Silent Failures**: Subtle UI bugs or performance leaks that don't trigger immediate errors.
+3.  **Manual Patching**: Reading a suggestion and manually typing it out.
+
+### **The Solution**
+S.P.E.C.T.R.E solves this by:
+-   **Proactive Detection**: Seeing what you see and alerting you instantly.
+-   **Autonomous Fixes**: Generating and applying patches directly to your source code.
+-   **Voice Assistance**: A masculine, American-accented AI voice that alerts you to high-severity issues so you don't have to look away from your code.
+
+---
+
+## 🏗️ System Architecture
 
 ```mermaid
 graph TD
     subgraph Client_Side [Browser / Frontend]
-        A[React UI] -->|MediaDevices API| B[Screen Capture]
+        A[React 19 UI] -->|MediaDevices API| B[Screen Capture]
         B -->|Base64 Frame| C[Gemini Service]
         C -->|Vision Analysis| D[Gemini 3 Flash API]
         D -->|JSON Suggestions| C
@@ -23,7 +46,7 @@ graph TD
         F -->|Modify Code| G[Project Source]
     end
 
-    subgraph External_Services [External]
+    subgraph External_Services [Google Cloud]
         D
     end
 
@@ -36,42 +59,89 @@ graph TD
 
 ---
 
-## 📃 Project Description
+## 🌟 Key Features
 
-### Features & Functionality
-- **Real-time Monitoring**: Captures the developer's screen every 5 seconds to provide continuous feedback.
-- **Multimodal Intelligence**: Uses Gemini 3 Flash's vision capabilities to "read" code, terminal outputs, and UI layouts directly from the screen.
-- **Autonomous Patching**: Generates diff-style patches that can be applied to the local codebase with a single click.
-- **Voice Feedback**: Provides auditory warnings for high-severity issues using the Web Speech API.
-- **Debug Timeline**: Maintains a chronological log of detected issues for session tracking.
-- **Terminal Agent Mode**: A standalone Python script allows S.P.E.C.T.R.E to run outside the browser, monitoring the entire desktop environment.
+### 1. **Visual Intelligence (Gemini 3 Flash)**
+Unlike standard linters, S.P.E.C.T.R.E "looks" at your screen. It can identify:
+-   **IDE Errors**: Red squiggly lines or linter warnings you might have missed.
+-   **Terminal Crashes**: Stack traces and build failures.
+-   **UI/UX Breaks**: Layout shifts or broken images in your browser preview.
 
-### Technologies Used
-- **Frontend**: React 19, TypeScript, Tailwind CSS 4, Lucide React (Icons), Motion (Animations).
-- **Backend**: Express.js, Node.js, `tsx` for runtime execution.
-- **AI**: Google Gemini SDK (`@google/genai`) using the `gemini-3-flash-preview` model.
-- **Build Tools**: Vite 6, TypeScript.
-- **APIs**: MediaDevices API (Screen Capture), Web Speech API (TTS).
+### 2. **Interactive Debug Timeline**
+Every detected issue is archived in a searchable timeline. Click any historical event to see the **Technical Brief**, **Resolution Path**, and the **Original Patch** generated for that specific moment.
 
-### Data Sources
-- **Primary Input**: Live screen capture stream from the user's desktop.
-- **Knowledge Base**: The Gemini 3 Flash model's internal training data for coding standards, common errors, and architectural best practices.
+### 3. **Autonomous Patching Engine**
+When S.P.E.C.T.R.E finds a fix, it doesn't just tell you—it offers to do it. Our patching engine uses fuzzy matching to find the exact lines in your source code and applies the fix with a single click.
 
-### Findings & Learnings
-- **Video Stream Synchronization**: One of the primary challenges was handling the race condition between the MediaDevices stream initialization and the React component mounting. Implementing a `useEffect` hook to manage the `srcObject` and explicit `.play()` calls was critical for stability.
-- **Indentation-Aware Patching**: Standard string replacement is insufficient for code. I learned that a robust patching system must preserve indentation and use "fuzzy matching" (trimmed line comparison) to find the correct code blocks in a dynamic environment.
-- **AI Resolution Balancing**: High-resolution captures are slow to process, while low-resolution ones lose code legibility. Finding the "sweet spot" (80% scale with 0.6 JPEG quality) was essential for maintaining both speed and accuracy.
-- **User Experience in AI Tools**: Providing clear indicators like "Neural Processing..." and a "Debug Timeline" helps build trust in the autonomous agent by making its "thought process" visible to the developer.
+### 4. **Voice Command & Alerts**
+Features a high-quality, masculine American AI voice that provides non-intrusive, queued audio alerts. It tells you exactly what's wrong so you can keep your hands on the keyboard.
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Technical Stack
 
-1. **Initialize System**: Click the "Initialize System" button in the header.
-2. **Grant Permissions**: Allow the browser to share your screen (select your IDE or entire screen).
-3. **Monitor**: Watch the "Active Intelligence" panel for real-time suggestions.
-4. **Apply Fixes**: When a patch is available, click "Apply Autonomous Fix" to update your code instantly.
+-   **Frontend**: React 19, TypeScript, Tailwind CSS 4, Lucide React, Motion (Framer Motion).
+-   **Backend**: Express.js (Node.js), `tsx`.
+-   **AI**: Google Gemini SDK (`@google/genai`) - `gemini-3-flash-preview`.
+-   **APIs**: 
+    -   `MediaDevices.getDisplayMedia()` for screen capture.
+    -   `Web Speech API` for intelligent voice synthesis.
+    -   `Canvas API` for real-time frame processing.
 
 ---
 
-*Developed with ❤️ for the next generation of AI-assisted engineering.*
+## 🚀 Deployment & Extensions
+
+S.P.E.C.T.R.E is available across multiple platforms to ensure you have AI assistance wherever you code.
+
+### 🌐 Web Application
+The primary interface for S.P.E.C.T.R.E, featuring the full Mission Control dashboard, real-time screen capture, and the interactive debug timeline.
+- **Live URL**: [https://ais-pre-abjm4bcghip424cuocra7o-461169291658.europe-west2.run.app](https://ais-pre-abjm4bcghip424cuocra7o-461169291658.europe-west2.run.app)
+
+### 💻 VS Code Extension
+Integrate S.P.E.C.T.R.E directly into your IDE. The extension provides a native sidebar for viewing suggestions and applying patches without leaving your workspace.
+- **Installation Guide**: [View VS Code Extension README](./spectre-vscode/README.md)
+
+### 🐍 Python Terminal Agent
+For developers who prefer the command line or need to monitor non-browser environments (like a standalone terminal or a native IDE), the Python agent provides a lightweight, background monitoring service.
+- **Source**: `spectre_agent.py`
+
+---
+
+## 🚀 How to Use
+
+### **Step 1: Initialization**
+Click the **"Initialize System"** button in the top right. This establishes the neural link between the browser and your desktop.
+
+### **Step 2: Screen Selection**
+Choose the window you want to monitor. For best results, select your **Entire Screen** or your **IDE Window**.
+
+### **Step 3: Real-time Analysis**
+As you code, S.P.E.C.T.R.E will periodically (every 5s) analyze your environment. Watch the **"Active Intelligence"** panel for live suggestions.
+
+### **Step 4: Interactive Timeline**
+If you miss an alert, check the **"Debug Timeline"** at the bottom of the sidebar. Click any entry to view the full historical data.
+
+### **Step 5: Apply Fixes**
+When a patch is available, click **"Apply Autonomous Fix"**. The backend will modify your local files instantly.
+
+---
+
+## 👨‍⚖️ Judge's Guide: What to Look For
+
+When evaluating S.P.E.C.T.R.E, please notice:
+1.  **Low Latency**: The speed at which Gemini 3 Flash processes visual data and returns structured JSON.
+2.  **UI Density**: The "Mission Control" aesthetic that provides high information density without clutter.
+3.  **Voice Interaction**: The intelligent queuing system that prevents overlapping audio alerts.
+4.  **Full-Stack Integration**: The seamless flow from a visual screen capture to a physical file system modification.
+
+---
+
+## 🗺️ Roadmap
+-   [ ] **Multi-Window Support**: Simultaneously monitor IDE and Browser.
+-   [ ] **Predictive Coding**: Suggesting the next 10 lines of code based on visual context.
+-   [ ] **Voice Commands**: "Spectre, fix the error in App.tsx" (Two-way voice interaction).
+
+---
+
+*Developed with ❤️ for the Google Gemini AI Hackathon.*

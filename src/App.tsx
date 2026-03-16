@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Monitor, Play, Square, Settings, Terminal, ShieldAlert, Cpu, Activity, Zap } from 'lucide-react';
-import { analyzeScreen, SpectreAnalysis, speak } from './services/geminiService';
+import { analyzeScreen, SpectreAnalysis, speak, playNotification } from './services/geminiService';
 import { SuggestionsPanel, TimelineEvent } from './components/SuggestionsPanel';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -162,6 +162,7 @@ export default function App() {
       };
     } catch (err: any) {
       console.error("[SPECTRE] Error starting capture:", err);
+      playNotification();
       if (err.name === 'NotAllowedError' || err.message?.includes('Permission denied')) {
         setError("System Access Denied: Please click 'Initialize System' and grant screen sharing permissions to continue.");
       } else if (err.name === 'NotFoundError') {

@@ -58,6 +58,32 @@ const processSpeechQueue = () => {
   window.speechSynthesis.speak(utterance);
 };
 
+export const playNotification = () => {
+  if (!('AudioContext' in window || 'webkitAudioContext' in window)) return;
+  
+  try {
+    const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
+    const ctx = new AudioContextClass();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime); // A5
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.1); // Drop to A4
+    
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } catch (e) {
+    console.warn("[SPECTRE] Audio notification failed:", e);
+  }
+};
+
 export const speak = (text: string) => {
   if ('speechSynthesis' in window) {
     // Avoid duplicate messages in short succession
@@ -139,6 +165,10 @@ Return ONLY a JSON array of objects:
     try {
       const results = JSON.parse(text) as SpectreAnalysis[];
       
+      if (results.length > 0) {
+        playNotification();
+      }
+
       // Voice feedback for high severity issues
       results.forEach(res => {
         if (res.severity === 'high') {
@@ -152,6 +182,7 @@ Return ONLY a JSON array of objects:
       return [];
     }
   } catch (error: any) {
+    playNotification();
     // ... existing error handling ...
     if (error.message?.includes("INVALID_ARGUMENT")) {
       console.error("S.P.E.C.T.R.E: API rejected the image. This usually happens if the image is too small or corrupted.", error);
