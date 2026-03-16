@@ -158,6 +158,25 @@ When a patch is available, click **"Apply Autonomous Fix"**. The backend will mo
 
 ---
 
+## 🤖 Automation & CI/CD
+
+S.P.E.C.T.R.E features a fully automated deployment pipeline to ensure rapid iteration and reliable cloud delivery.
+
+### **Automated Deployment Script**
+The system includes a dedicated [deploy.sh](./deploy.sh) script that automates the entire production lifecycle:
+1.  **Dependency Sync**: Ensures all production packages are aligned.
+2.  **Linting**: Validates code quality before build.
+3.  **Asset Compilation**: Optimizes React assets for production.
+4.  **Cloud Sync**: Deploys the built assets to Firebase Hosting and updates Firestore Security Rules.
+
+To trigger a deployment:
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+---
+
 ## 👨‍⚖️ Judge's Guide: What to Look For
 
 When evaluating S.P.E.C.T.R.E, please notice:
