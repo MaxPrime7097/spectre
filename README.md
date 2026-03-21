@@ -127,7 +127,7 @@ S.P.E.C.T.R.E is available across multiple platforms to ensure you have AI assis
 
 ### 🌐 Web Application
 The primary interface for S.P.E.C.T.R.E, featuring the full Mission Control dashboard, real-time screen capture, and the interactive debug timeline.
-- **Live URL**: [https://fir-p-e-c-t-r-e-bdd37.web.app/](https://fir-p-e-c-t-r-e-bdd37.web.app/)
+- **Live URL**: [https://fir-p-e-c-t-r-e-bdd37.web.app/](https://fir-p-e-c-t-r-e-bdd37.web.app/) or [https://s-p-e-c-t-r-e-573880483888.us-west1.run.app/](https://s-p-e-c-t-r-e-573880483888.us-west1.run.app/)
 
 ### 💻 VS Code Extension
 Integrate S.P.E.C.T.R.E directly into your IDE. The extension provides a native sidebar for viewing suggestions and applying patches without leaving your workspace.
